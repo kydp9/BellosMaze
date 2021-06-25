@@ -11,10 +11,10 @@ public class BufferedImageArray {
 
     static {
         try {
-            imageUp = ImageIO.read(new File("./res/up.png"));
-            imageDown = ImageIO.read(new File("./res/down.png"));
-            imageRight = ImageIO.read(new File("./res/right.png"));
-            imageLeft = ImageIO.read(new File("./res/left.png"));
+            imageUp = ImageIO.read(new File("./res/down.png"));
+            imageDown = ImageIO.read(new File("./res/up.png"));
+            imageRight = ImageIO.read(new File("./res/left.png"));
+            imageLeft = ImageIO.read(new File("./res/right.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,6 @@ public class MazeVisual {
     private JButton buttonMove;
 
 
-
     public static void main(String[] args) {
         new MazeVisual(10);
     }
@@ -31,7 +30,7 @@ public class MazeVisual {
     public MazeVisual(int size) {
         this.size = size;
         field = new Cell[size][size];
-        gField =  new MyImagePanel[size][size];
+        gField = new MyImagePanel[size][size];
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -67,7 +66,7 @@ public class MazeVisual {
                     field[col][row] = new Cell(0, Direction.class.getEnumConstants()[randomInt]);
                     MyImagePanel cell = new MyImagePanel(0, Direction.class.getEnumConstants()[randomInt]);
 
-                    if(row ==0 && col ==0 ){
+                    if (row == 0 && col == 0) {
                         cell.setBackground(Color.RED);
                     } else {
                         cell.setBackground(Color.GREEN);
@@ -92,27 +91,36 @@ public class MazeVisual {
         prev.setState(Cell.STATE_EMPTY);
         jPrev.setState(Cell.STATE_EMPTY);
         int direction = 0;
+        boolean isMove = false;
         switch (field[currentY][currentX].getDirection()) {
             case DIRECTION_UP_DESCRIPTION:
                 direction = 2;
-                if (currentY != size - 1)
+                if (currentY != size - 1) {
                     currentY++;
+                    isMove = true;
+                }
                 break;
             case DIRECTION_RIGHT_DESCRIPTION:
                 direction = 3;
-                if (currentX != 0)
+                if (currentX != 0) {
                     currentX--;
+                    isMove = true;
+                }
                 break;
             case DIRECTION_DOWN_DESCRIPTION:
                 direction = 0;
-                if (currentY != 0)
+                if (currentY != 0) {
                     currentY--;
+                    isMove = true;
+                }
                 break;
 
             case DIRECTION_LEFT_DESCRIPTION:
                 direction = 1;
-                if (currentX != size - 1)
+                if (currentX != size - 1) {
                     currentX++;
+                    isMove = true;
+                }
                 break;
 
         }
@@ -125,6 +133,7 @@ public class MazeVisual {
         jPrev.repaint();
         field[currentY][currentX].setState(Cell.STATE_OCCUPIED);
         gField[currentY][currentX].setBackground(Color.RED);
+        if(isMove)
         jPrev.setBackground(Color.GREEN);
     }
 
