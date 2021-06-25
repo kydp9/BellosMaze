@@ -4,8 +4,12 @@ import bellos.Cell;
 import bellos.Direction;
 import visual.graphics.MyImagePanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class MazeVisual {
@@ -18,11 +22,14 @@ public class MazeVisual {
     private MyImagePanel[][] gField;
     private JButton buttonMove;
 
+
+
     public static void main(String[] args) {
         new MazeVisual(10);
     }
 
     public MazeVisual(int size) {
+        this.size = size;
         field = new Cell[size][size];
         gField =  new MyImagePanel[size][size];
         EventQueue.invokeLater(new Runnable() {
@@ -45,6 +52,7 @@ public class MazeVisual {
         });
     }
 
+
     public class Panel extends JPanel {
 
         public Panel(int size) {
@@ -58,13 +66,12 @@ public class MazeVisual {
                     int randomInt = random.nextInt(4);
                     field[col][row] = new Cell(0, Direction.class.getEnumConstants()[randomInt]);
                     MyImagePanel cell = new MyImagePanel(0, Direction.class.getEnumConstants()[randomInt]);
-                    int color = 0;
+
                     if(row ==0 && col ==0 ){
                         cell.setBackground(Color.RED);
                     } else {
                         cell.setBackground(Color.GREEN);
                     }
-
                     gField[col][row] = cell;
                     add(cell);
                 }
@@ -87,25 +94,27 @@ public class MazeVisual {
         int direction = 0;
         switch (field[currentY][currentX].getDirection()) {
             case DIRECTION_UP_DESCRIPTION:
-                direction = 0;
-                if (currentY != 0)
-                    currentY--;
-                break;
-            case DIRECTION_RIGHT_DESCRIPTION:
-                direction = 1;
-                if (currentX != size - 1)
-                    currentX++;
-                break;
-            case DIRECTION_DOWN_DESCRIPTION:
                 direction = 2;
                 if (currentY != size - 1)
                     currentY++;
                 break;
-            case DIRECTION_LEFT_DESCRIPTION:
+            case DIRECTION_RIGHT_DESCRIPTION:
                 direction = 3;
                 if (currentX != 0)
                     currentX--;
                 break;
+            case DIRECTION_DOWN_DESCRIPTION:
+                direction = 0;
+                if (currentY != 0)
+                    currentY--;
+                break;
+
+            case DIRECTION_LEFT_DESCRIPTION:
+                direction = 1;
+                if (currentX != size - 1)
+                    currentX++;
+                break;
+
         }
 
         prev.flip();

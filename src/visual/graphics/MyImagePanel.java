@@ -1,10 +1,12 @@
 package visual.graphics;
 
 import bellos.Direction;
+import visual.MazeVisual;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.TextHitInfo;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +14,9 @@ import java.io.IOException;
 public class MyImagePanel extends JPanel {
 
 
-    private BufferedImage imageUp;
-    private BufferedImage imageDown;
-    private BufferedImage imageLeft;
-    private BufferedImage imageRight;
+
     private BufferedImage image;
-    private BufferedImage[] bufferedImages ;
+
     public static final int STATE_EMPTY = 0;
     public static final int STATE_OCCUPIED = 1;
     private JLabel myLabel;
@@ -25,20 +24,14 @@ public class MyImagePanel extends JPanel {
 
     private Direction direction;
 
+
+
     public MyImagePanel(int state, Direction direction) {
-        try {
-            imageUp = ImageIO.read(new File("./res/up.png"));
-            imageDown = ImageIO.read(new File("./res/down.png"));
-            imageRight = ImageIO.read(new File("./res/right.png"));
-            imageLeft = ImageIO.read(new File("./res/left.png"));
-        } catch (IOException ex) {
-            // handle exception...
-        }
 
         this.state = state;
         this.direction = direction;
-        bufferedImages = new BufferedImage[]{imageUp, imageRight, imageDown, imageLeft};
-    image = bufferedImages[this.direction.ordinal()];
+
+    image = BufferedImageArray.getBufferedImage(this.direction.ordinal());
     setLayout(new BorderLayout (5,5));
     myLabel=new JLabel(new ImageIcon(image));
     add(myLabel);
@@ -65,12 +58,12 @@ public class MyImagePanel extends JPanel {
     }
 
     public void setImage(int i){
-        myLabel.setIcon(new ImageIcon(bufferedImages[i]));
+        myLabel.setIcon(new ImageIcon(BufferedImageArray.getBufferedImage(i)));
     }
     @Override
     public void repaint() {
-        if(direction != null && bufferedImages[this.direction.ordinal()] != null){
-            image = bufferedImages[this.direction.ordinal()];
+        if(direction != null && BufferedImageArray.getBufferedImage(this.direction.ordinal()) != null){
+            image = BufferedImageArray.getBufferedImage(this.direction.ordinal());
         }
         super.repaint();
 

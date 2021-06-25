@@ -7,8 +7,6 @@ public class VisualSolver {
     public static void main(String[] args) {
         int size = 8;
 
-
-
         MazeVisual maze= new MazeVisual(10);
         try {
             Thread.sleep(2000);
@@ -20,7 +18,7 @@ public class VisualSolver {
         while (!maze.isSolved()) {
             moves++;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(400);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
