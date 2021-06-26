@@ -2,6 +2,8 @@ package visual;
 
 import bellos.Maze;
 
+import javax.swing.*;
+
 public class VisualSolver {
 
     public static void main(String[] args) {

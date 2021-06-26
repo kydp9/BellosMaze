@@ -4,13 +4,13 @@ import bellos.Cell;
 import bellos.Direction;
 import visual.graphics.MyImagePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+
+
 
 public class MazeVisual {
 
@@ -21,13 +21,16 @@ public class MazeVisual {
     private Cell[][] field;
     private MyImagePanel[][] gField;
     private JButton buttonMove;
-
-
+    private JButton buttonRestart;
+    private MazeVisual mazeVisual;
+    private  JPanel mainPanel;
+    private JFrame frame;
     public static void main(String[] args) {
         new MazeVisual(10);
     }
 
     public MazeVisual(int size) {
+        mazeVisual = this;
         this.size = size;
         field = new Cell[size][size];
         gField = new MyImagePanel[size][size];
@@ -39,10 +42,33 @@ public class MazeVisual {
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
-                buttonMove = new JButton("Move");
-                JFrame frame = new JFrame("Maze");
+                buttonMove = new JButton("Start");
+                buttonMove.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        startMaze(mazeVisual);
+                    }
+                } );
+                buttonRestart = new JButton("RESTART");
+                buttonRestart.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        restartMaze();
+                    }
+                } );
+
+                frame = new JFrame("Maze");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.add(new Panel(size));
+                BorderLayout borderLayout = new BorderLayout();
+
+                mainPanel = new JPanel(borderLayout);
+                JPanel upPanel = new JPanel(new FlowLayout());
+
+                upPanel.add(buttonMove);
+                upPanel.add(buttonRestart);
+                MazePanel mazePanel =  new MazePanel(size);
+                mainPanel.add(upPanel,BorderLayout.NORTH);
+                mainPanel.add(mazePanel,BorderLayout.CENTER);
+
+                frame.add(mainPanel);
 
                 frame.pack();
                 frame.setLocationRelativeTo(null);
@@ -52,9 +78,9 @@ public class MazeVisual {
     }
 
 
-    public class Panel extends JPanel {
+    public class MazePanel extends JPanel {
 
-        public Panel(int size) {
+        public MazePanel(int size) {
             gridLayout = new GridLayout(size, size, 0, 0);
 
             setLayout(gridLayout);
@@ -137,4 +163,35 @@ public class MazeVisual {
         jPrev.setBackground(Color.GREEN);
     }
 
+
+    private void startMaze(MazeVisual mazeVisual){
+        Thread thread = new Thread(){
+            public void run(){
+                int moves = 0;
+
+                while (!mazeVisual.isSolved()) {
+                    moves++;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //System.in.read();
+                    mazeVisual.move();
+                }
+
+                JOptionPane.showMessageDialog(frame,
+                        "Maze solved in " + moves + ".");
+            }
+        };
+        thread.start();
+    }
+
+    private void restartMaze(){
+        MazePanel mazePanel =  new MazePanel(size);
+
+        mainPanel.add(mazePanel,BorderLayout.CENTER);
+
+        mazePanel.repaint();
+    }
 }
